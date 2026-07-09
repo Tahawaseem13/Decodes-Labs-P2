@@ -1,6 +1,11 @@
 import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import f1_score
 
 # Load Iris Dataset
 iris = load_iris()
@@ -59,3 +64,36 @@ print(X_train.shape)
 
 print("\n========== Testing Data ==========")
 print(X_test.shape)
+
+
+model = KNeighborsClassifier(n_neighbors=5)
+
+
+model.fit(X_train, y_train)
+
+print("\n========== Model Trained Successfully ==========")
+
+y_pred = model.predict(X_test)
+
+print("\n========== Actual Labels ==========")
+print(y_test)
+
+print("\n========== Predicted Labels ==========")
+print(y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+
+print("\n========== Accuracy ==========")
+print(f"Accuracy: {accuracy * 100:.2f}%")
+
+cm = confusion_matrix(y_test, y_pred)
+
+print("\n========== Confusion Matrix ==========")
+print(cm)
+
+print("\n========== Classification Report ==========")
+print(classification_report(y_test, y_pred))
+
+f1 = f1_score(y_test, y_pred, average="weighted")
+
+print("\n========== F1 Score ==========")
+print(f"F1 Score: {f1:.2f}")
