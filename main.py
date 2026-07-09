@@ -6,6 +6,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
+
 
 # Load Iris Dataset
 iris = load_iris()
@@ -97,3 +100,52 @@ f1 = f1_score(y_test, y_pred, average="weighted")
 
 print("\n========== F1 Score ==========")
 print(f"F1 Score: {f1:.2f}")
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    y_pred,
+    display_labels=iris.target_names
+)
+
+plt.title("Confusion Matrix")
+
+plt.show()
+
+
+print("\n========== Predict Your Own Flower ==========")
+
+sepal_length = float(input("Enter Sepal Length (cm): "))
+sepal_width = float(input("Enter Sepal Width (cm): "))
+petal_length = float(input("Enter Petal Length (cm): "))
+petal_width = float(input("Enter Petal Width (cm): "))
+
+# Create Input
+new_flower = [[
+    sepal_length,
+    sepal_width,
+    petal_length,
+    petal_width
+]]
+
+# Scale Input
+new_flower = scaler.transform(new_flower)
+
+# Predict
+prediction = model.predict(new_flower)
+
+species = iris.target_names[prediction[0]]
+
+print("\n========== Prediction ==========")
+print(f"Predicted Species: {species.capitalize()}")
+
+
+
+plt.figure(figsize=(6,4))
+
+df["species"].value_counts().plot(kind="bar")
+
+plt.title("Iris Species Distribution")
+plt.xlabel("Species")
+plt.ylabel("Count")
+
+plt.show()
